@@ -449,6 +449,7 @@ class TestImportsSynthese:
                 headers=Headers({"Content-Type": "multipart/form-data"}),
             )
             assert r.status_code == Forbidden.code, r.data
+            assert r.is_json, r.mimetype
             assert "has no permissions to C in IMPORT" in r.json["description"]
 
         set_logged_user(self.client, users["user"])
@@ -567,6 +568,7 @@ class TestImportsSynthese:
         set_logged_user(self.client, users["user"])
         r = self.client.post(url_for("import.decode_file", import_id=imprt.id_import), data=data)
         assert r.status_code == BadRequest.code, r.data
+        assert r.is_json, r.data
         assert "first upload" in r.json["description"]
 
         imprt.full_file_name = "import.csv"

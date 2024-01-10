@@ -46,6 +46,8 @@ def handle_validation_error(e):
 @current_app.errorhandler(HTTPException)
 def handle_http_exception(e):
     response = e.get_response()
+    print("request.accept_mimetypes:", request.accept_mimetypes)
+    print("request.accept_mimetypes.best:", request.accept_mimetypes.best)
     if request.accept_mimetypes.best == "application/json":
         response.data = json.dumps(
             {

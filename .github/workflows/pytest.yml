@@ -6,6 +6,7 @@ on:
       - master
       - hotfixes
       - develop
+      - feat/import-debug
   pull_request:
     branches:
       - master
@@ -132,7 +133,7 @@ jobs:
           GEONATURE_CONFIG_FILE: config/test_config.toml
       - name: Test with pytest
         run: |
-          pytest -v --cov --cov-report xml
+          pytest -s -vv --cov --cov-report xml
         env:
           GEONATURE_CONFIG_FILE: config/test_config.toml
       - name: Upload coverage to Codecov
