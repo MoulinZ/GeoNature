@@ -15,4 +15,8 @@ class OcchabModule(TModules):
         "check_transient_data": check_transient_data,
         "import_data_to_destination": import_data_to_occhab,
         "remove_data_from_destination": remove_data_from_occhab,
+        "statistics_labels": {
+            "station_count": "Nombre de stations importées",
+            "habitat_count": "Nombre d’habitats importés",
+        },
     }
