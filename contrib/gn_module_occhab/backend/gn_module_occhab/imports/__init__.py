@@ -73,8 +73,10 @@ def check_transient_data(task, logger, imprt):
         .order_by(Entity.order)  # order matters for id_station
         .all()
     }
+    controlled_fields = set()
     for entity in entities.values():
         fields = {ef.field.name_field: ef.field for ef in entity.fields}
+        uncontrolled_fields = {k: v for k, v in fields.items() if k not in controlled_fields}
         selected_fields = {
             field_name: fields[field_name]
             for field_name, source_field in imprt.fieldmapping.items()
@@ -91,9 +93,7 @@ def check_transient_data(task, logger, imprt):
 
         df = load_transient_data_in_dataframe(imprt, entity, source_cols)
 
-        updated_cols |= check_types(
-            imprt, entity, df, fields
-        )  # FIXME do not check station uuid twice
+        updated_cols |= check_types(imprt, entity, df, uncontrolled_fields)
 
         if entity.code == "station":
             updated_cols |= check_datasets(
@@ -105,9 +105,7 @@ def check_transient_data(task, logger, imprt):
                 module_code="OCCHAB",
             )
 
-        updated_cols |= check_required_values(
-            imprt, entity, df, fields
-        )  # FIXME do not check required multi-entity fields twice
+        updated_cols |= check_required_values(imprt, entity, df, uncontrolled_fields)
 
         if entity.code == "station":
             updated_cols |= check_geography(
@@ -213,6 +211,8 @@ def check_transient_data(task, logger, imprt):
                 child_entity=entities["habitat"],
                 parent_line_no="station_line_no",
             )
+
+        controlled_fields |= fields.keys()
 
 
 def import_data_to_occhab(imprt):
