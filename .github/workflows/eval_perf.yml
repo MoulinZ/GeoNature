@@ -1,4 +1,4 @@
-name: pytestPerf
+name: Routes performance evaluation
 
 on:
   push:
@@ -88,12 +88,12 @@ jobs:
           geonature db status --dependencies
         env:
           GEONATURE_CONFIG_FILE: config/test_config.toml
-      - name: Install database
+      - name: Restore database
         run: |
-          wget https://www.dropbox.com/scl/fi/17gsthsftfg59mxwmbbre/export_geonature_10000.zip\?rlkey\=33choleag4xw60wadm802c3oh\&dl\=1 -O export_geonature_10000.zip
-          unzip export_geonature_10000.zip
+          wget https://www.dropbox.com/scl/fi/jvdjshw0azixurzgjyr20/100kDump.zip?rlkey=4nt2bjc4rqg868frt3tjbwz0w&dl=1 -O 100kDump.zip
+          unzip 100kDump.zip
           ls
-          psql -h localhost -U geonatadmin -d geonature2db -f test.sql
+          psql -h localhost -U geonatadmin -d geonature2db -f 100kDump
         env:
           PGPASSWORD: geonatpasswd
       - name: Install module import
@@ -124,11 +124,7 @@ jobs:
           GEONATURE_CONFIG_FILE: config/test_config.toml
       - name: Test with pytest
         run: |
-          pytest -v --cov --cov-report xml
+          pytest backend/geonature/tests/test_benchmark.py
         env:
           GEONATURE_CONFIG_FILE: config/test_config.toml
-      - name: Upload coverage to Codecov
-        if: ${{ matrix.debian-version == '11' }}
-        uses: codecov/codecov-action@v3
-        with:
-          flags: pytest
+        # https://stackoverflow.com/a/64126737 For posting results on GitHub Pull Requests
