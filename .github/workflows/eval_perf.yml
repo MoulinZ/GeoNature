@@ -90,7 +90,7 @@ jobs:
           GEONATURE_CONFIG_FILE: config/test_config.toml
       - name: Restore database
         run: |
-          curl https://www.dropbox.com/scl/fi/jvdjshw0azixurzgjyr20/100kDump.zip?rlkey=4nt2bjc4rqg868frt3tjbwz0w&dl=1 > 100kDump.zip
+          curl https://www.dropbox.com/scl/fi/jvdjshw0azixurzgjyr20/100kDump.zip?rlkey=4nt2bjc4rqg868frt3tjbwz0w&dl=1 -O 100kDump.zip
           unzip 100kDump.zip
           ls
           psql -h localhost -U geonatadmin -d geonature2db -f 100kDump
