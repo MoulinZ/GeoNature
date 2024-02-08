@@ -90,10 +90,11 @@ jobs:
           GEONATURE_CONFIG_FILE: config/test_config.toml
       - name: Restore database
         run: |
-          wget https://www.dropbox.com/scl/fi/17gsthsftfg59mxwmbbre/export_geonature_10000.zip?rlkey=33choleag4xw60wadm802c3oh&dl=1 -O 10kDump.zip
-          unzip 10kDump.zip
+          # wget https://www.dropbox.com/scl/fi/17gsthsftfg59mxwmbbre/export_geonature_10000.zip?rlkey=33choleag4xw60wadm802c3oh&dl=1 -O 10kDump.zip
+          # unzip 10kDump.zip
+          wget https://www.dropbox.com/scl/fi/jjkxyg120bxc0dp8uy8kq/300KDump.sql?rlkey=tyuk2svitcb9nyshn7r09yo7b&dl=1 -O 300KDump.sql
           ls
-          psql -h localhost -U geonatadmin -d geonature2db -f test.sql
+          psql -h localhost -U geonatadmin -d geonature2db -f 300KDump.sql
         env:
           PGPASSWORD: geonatpasswd
       - name: Install module import
