@@ -1,16 +1,7 @@
 name: Routes performance evaluation
 
 on:
-  push:
-    branches:
-      - master
-      - hotfixes
-      - develop
-  pull_request:
-    branches:
-      - master
-      - hotfixes
-      - develop
+  workflow_dispatch:
 
 jobs:
   build:
